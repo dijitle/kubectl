@@ -5,7 +5,8 @@ RUN apk add curl && \
     chmod +x ./kubectl && \
     mv ./kubectl /usr/local/bin
 
-ADD kubectl-init.sh /usr/local/bin
+ADD kubectl-init.sh /usr/local/bin 
+RUN chmod +x /usr/local/bin/kubectl-init.sh
 
 ENTRYPOINT [ "kubectl" ]
 CMD [ "--help" ]
