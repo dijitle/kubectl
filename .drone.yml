@@ -1,0 +1,41 @@
+---
+kind: pipeline
+type: kubernetes
+name: default
+
+steps:
+  - name: build
+    image: docker:dind
+    privileged: true
+    volumes:
+      - name: dockersock
+        path: /var/run/
+    commands:
+      - docker build --tag dijitle/kubectl:$DRONE_COMMIT .
+  - name: push
+    image: docker:dind
+    privileged: true
+    environment:
+      USERNAME:
+        from_secret: docker_username
+      PASSWORD:
+        from_secret: docker_password
+    volumes:
+      - name: dockersock
+        path: /var/run/
+    commands:
+      - docker tag dijitle/kubectl:$DRONE_COMMIT dijitle/kubectl:$DRONE_TAG
+      - docker login -u $USERNAME -p $PASSWORD
+      - docker push dijitle/kubectl:$DRONE_TAG
+    when:
+      event:
+        - tag
+volumes:
+  - name: dockersock
+    host:
+      path: /var/run/
+---
+kind: signature
+hmac: 089906fc1e0624123b5f699bc35edc826489e36f3b78c15a548ea49e0016f4ae
+
+...
