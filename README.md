@@ -2,6 +2,8 @@
 
 alpine based image with kubectl (arm) installed
 
+[![Build Status](https://drone.dijitle.dev/api/badges/dijitle/kubectl/status.svg)](https://drone.dijitle.dev/dijitle/kubectl)
+
 ## Useage
 
 ```yaml
